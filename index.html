@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Agrinho - Quiz Agro Sustentável</title>
+    <style>
+        :root {
+            --verde-escuro: #2e7d32;
+            --verde-claro: #4caf50;
+            --bege-fundo: #f1f8e9;
+            --branco: #ffffff;
+            --texto: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bege-fundo);
+            color: var(--texto);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--verde-escuro);
+            color: var(--branco);
+            width: 100%;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+        }
+
+        .card {
+            background-color: var(--branco);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--verde-claro);
+            color: var(--branco);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--verde-escuro);
+        }
+
+        .opcoes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .opcao-btn {
+            background-color: #f5f5f5;
+            color: var(--texto);
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .opcao-btn:hover {
+            background-color: #e8f5e9;
+            border-color: var(--verde-claro);
+        }
+
+        .escondido {
+            display: none;
+        }
+
+        #resultado h2 {
+            color: var(--verde-escuro);
+        }
+
+        footer {
+            background-color: #333;
+            color: #ccc;
+            width: 100%;
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Projeto Agrinho</h1>
+        <p>Quiz do Agronegócio Sustentável</p>
+    </header>
+
+    <main>
+        <div id="tela-inicial" class="card">
+            <h2>Bem-vindo ao Quiz da Sustentabilidade!</h2>
+            <p>Teste seus conhecimentos sobre as melhores práticas no campo, preservação ambiental e tecnologia no agro.</p>
+            <button class="btn" onclick="iniciarQuiz()">Começar Quiz</button>
+        </div>
+
+        <div id="tela-quiz" class="card escondido">
+            <h3 id="numero-pergunta">Pergunta 1 de 5</h3>
+            <p id="texto-pergunta" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1.5rem;"></p>
+            <div id="opcoes" class="opcoes-container">
+                </div>
+        </div>
+
+        <div id="tela-resultado" class="card escondido">
+            <h2>Quiz Concluído!</h2>
+            <p id="feedback-resultado" style="font-size: 1.3rem; margin: 1.5rem 0;"></p>
+            <button class="btn" onclick="reiniciarQuiz()">Refazer Quiz</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Projeto Agrinho - Feito com orgulho para a comunidade escolar.</p>
+    </footer>
+
+    <script>
+        // Banco de perguntas do Quiz
+        const perguntas = [
+            {
+                pergunta: "Qual das práticas abaixo ajuda a evitar a erosão do solo?",
+                opcoes: ["Plantio direto", "Queimada controlada", "Desmatamento das margens", "Uso excessivo de tratores"],
+                correta: 0
+            },
+            {
+                pergunta: "O que é rotação de culturas?",
+                opcoes: ["Mudar a fazenda de lugar todo ano", "Alternar as espécies plantadas na mesma área", "Usar drones para girar as plantas", "Plantar apenas uma cultura para sempre"],
+                correta: 1
+            },
+            {
+                pergunta: "Qual é a principal vantagem do uso da agricultura de precisão?",
+                opcoes: ["Gastar mais água", "Evitar o uso de qualquer tecnologia", "Aplicar insumos no local certo e na quantidade exata", "Aumentar o trabalho braçal de forma exaustiva"],
+                correta: 2
+            },
+            {
+                pergunta: "A preservação das Matas Ciliares é importante por quê?",
+                opcoes: ["Para enfeitar a fazenda", "Para proteger os rios e nascentes contra o assoreamento", "Para aumentar a área de pastagem", "Para bloquear o vento das plantações"],
+                correta: 1
+            },
+            {
+                pergunta: "O que caracteriza o controle biológico de pragas?",
+                opcoes: ["Uso intensivo de defensivos químicos", "Uso de inimigos naturais (insetos benéficos) para combater pragas", "Deixar a praga destruir a plantação", "Uso de plantas artificiais"],
+                correta: 1
+            }
+        ];
+
+        let perguntaAtual = 0;
+        let pontuacao = 0;
+
+        function iniciarQuiz() {
+            document.getElementById('tela-inicial').classList.add('escondido');
+            document.getElementById('tela-quiz').classList.remove('escondido');
+            mostrarPergunta();
+        }
+
+        function mostrarPergunta() {
+            const q = perguntas[perguntaAtual];
+            document.getElementById('numero-pergunta').innerText = `Pergunta ${perguntaAtual + 1} de ${perguntas.length}`;
+            document.getElementById('texto-pergunta').innerText = q.pergunta;
+
+            const containerOpcoes = document.getElementById('opcoes');
+            containerOpcoes.innerHTML = ''; // Limpa opções anteriores
+
+            q.opcoes.forEach((opcao, index) => {
+                const botao = document.createElement('button');
+                botao.classList.add('opcao-btn');
+                botao.innerText = opcao;
+                botao.onclick = () => verificarResposta(index);
+                containerOpcoes.appendChild(botao);
+            });
+        }
+
+        function verificarResposta(indiceSelecionado) {
+            if (indiceSelecionado === perguntas[perguntaAtual].correta) {
+                pontuacao++;
+            }
+
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+                mostrarPergunta();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('tela-quiz').classList.add('escondido');
+            document.getElementById('tela-resultado').classList.remove('escondido');
+            
+            const feedback = document.getElementById('feedback-resultado');
+            feedback.innerHTML = `Você acertou <strong>${pontuacao}</strong> de <strong>${perguntas.length}</strong> perguntas!<br><br>`;
+            
+            if (pontuacao === perguntas.length) {
+                feedback.innerHTML += "🌱 Excelente! Você é um mestre do Agro Sustentável!";
+            } else if (pontuacao >= 3) {
+                feedback.innerHTML += "🌾 Muito bom! Você conhece bem as práticas sustentáveis.";
+            } else {
+                feedback.innerHTML += "🚜 Continue estudando! O futuro do planeta depende do agro consciente.";
+            }
+        }
+
+        function reiniciarQuiz() {
+            perguntaAtual = 0;
+            pontuacao = 0;
+            document.getElementById('tela-resultado').classList.add('escondido');
+            document.getElementById('tela-inicial').classList.remove('escondido');
+        }
+    </script>
+</body>
+</html>
